@@ -5,7 +5,6 @@ public class Main {
         preguntarUsuarioPorRango();
 
 
-
     }
 
     public static int preguntarUsuarioPorRango() {
@@ -14,11 +13,14 @@ public class Main {
                 "\nSi introduces -1 el número generado es aleatorio");
         Scanner sc = new Scanner(System.in);
         int number = sc.nextInt();
+        //Si el número que da es el -1 genera un número aleatorio
         if (number == -1) {
             number = (int) (Math.random() * 90 + 10);
             System.out.println(number);
             return number;
-        } else {
+        }
+        //Aquí comprobamos que el número introducido no sea menor que 10 o mayor que 99
+        else {
             while (number < 10 || number > 99) {
                 if (number == -1) {
                     number = (int) (Math.random() * 90 + 10);
@@ -34,5 +36,6 @@ public class Main {
         return number;
 
     }
+
 
 }
