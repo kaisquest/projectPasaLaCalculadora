@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
-    public void main(String[] args) {
+    public static void main(String[] args) {
         comprobarNumeroParaJugar();
 
 
@@ -44,14 +44,14 @@ public class Main {
 
     }
 
-    public void comprobarNumeroParaJugar() {
+    public static void comprobarNumeroParaJugar() {
         int nuevoNumero;
         int numeroAnterior;
         int contadorTotal;
         int rangoMaximo = preguntarUsuarioPorRango();
         boolean numberIsValid = true;
 
-
+// tablero
         //En turno 1 permitimos cualquier número del 1 al 9
 
         nuevoNumero = introducirNumero();
@@ -82,17 +82,41 @@ public class Main {
             } else if (numeroAnterior == 9 && ((nuevoNumero == 9 || nuevoNumero == 1 || nuevoNumero == 2 || nuevoNumero == 4 || nuevoNumero == 5))) {
                 mostrarErrorFilasColumnas();
             } else {
+                //si el nº es valido
                 numeroAnterior = nuevoNumero;
+                contadorTotal = contadorTotal + nuevoNumero;
+
             }
 
-            contadorTotal = nuevoNumero + numeroAnterior;
+
             System.out.println(contadorTotal);
         }
 
-        //Comprobamos que la suma del nuevo número introducido con el anterior no sea superior al rango del usuario
-        contadorTotal = nuevoNumero + numeroAnterior;
-        System.out.println(contadorTotal);
 
+    }
+
+    public static boolean validarNumeros(int nuevoNumero, int anteriorNumero) {
+        if (anteriorNumero == 1 && ((nuevoNumero == 1 || nuevoNumero == 5 || nuevoNumero == 6 || nuevoNumero == 8 || nuevoNumero == 9))) {
+            return false;
+        } else if (anteriorNumero == 2 && ((nuevoNumero == 2 || nuevoNumero == 4 || nuevoNumero == 7 || nuevoNumero == 6 || nuevoNumero == 9))) {
+            return false;
+        } else if (anteriorNumero == 3 && ((nuevoNumero == 3 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 4 || nuevoNumero == 7))) {
+            return false;
+        } else if (anteriorNumero == 4 && ((nuevoNumero == 4 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 9 || nuevoNumero == 6))) {
+            return false;
+        } else if (anteriorNumero == 5 && ((nuevoNumero == 5 || nuevoNumero == 1 || nuevoNumero == 3 || nuevoNumero == 7 || nuevoNumero == 9))) {
+            return false;
+        } else if (anteriorNumero == 6 && ((nuevoNumero == 6 || nuevoNumero == 1 || nuevoNumero == 2 || nuevoNumero == 7 || nuevoNumero == 8))) {
+            return false;
+        } else if (anteriorNumero == 7 && ((nuevoNumero == 7 || nuevoNumero == 2 || nuevoNumero == 3 || nuevoNumero == 5 || nuevoNumero == 6))) {
+            return false;
+        } else if (anteriorNumero == 8 && ((nuevoNumero == 8 || nuevoNumero == 1 || nuevoNumero == 3 || nuevoNumero == 4 || nuevoNumero == 6))) {
+            return false;
+        } else if (anteriorNumero == 9 && ((nuevoNumero == 9 || nuevoNumero == 1 || nuevoNumero == 2 || nuevoNumero == 4 || nuevoNumero == 5))) {
+            return false;
+        }
+
+        return true;
 
     }
 
@@ -112,9 +136,9 @@ public class Main {
      *
      * @return
      */
-    public int introducirNumero() {
+    public static int introducirNumero() {
         int nuevoNumero;
-        System.out.println("Por favor, introduce un número entre el 1 y el 9 para jugar  ");
+        System.out.println("Por favor, introduce un número entre el 1 y el 9 para jugar: ");
         Scanner sc = new Scanner(System.in);
         nuevoNumero = sc.nextInt();
         if (nuevoNumero < 1 || nuevoNumero > 9) {
@@ -123,6 +147,17 @@ public class Main {
         }
         return nuevoNumero;
 
+
     }
+
+    public static int comprobarTurno() {
+        int jugador1 = 1;
+        int jugador2 = 2;
+
+        if ()
+        
+
+    }
+
 
 }
