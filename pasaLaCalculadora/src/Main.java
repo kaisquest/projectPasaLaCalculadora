@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        comprobarNumeroParaJugar();
+        comprobarCicloDeJuego();
 
 
     }
@@ -23,7 +23,7 @@ public class Main {
         //Si el número que da es el -1 genera un número aleatorio
         if (number == -1) {
             number = (int) (Math.random() * 90 + 10);
-            System.out.println(number);
+
             return number;
         }
         //Aquí comprobamos que el número introducido no sea menor que 10 o mayor que 99
@@ -31,7 +31,7 @@ public class Main {
             while (number < 10 || number > 99) {
                 if (number == -1) {
                     number = (int) (Math.random() * 90 + 10);
-                    System.out.println(number);
+
                     return number;
                 } else {
                     System.out.println("El número introducido no es válido. Por favor, introduce un número válido");
@@ -39,61 +39,57 @@ public class Main {
                 }
             }
         }
-        System.out.println(number);
+
         return number;
 
     }
 
-    public static void comprobarNumeroParaJugar() {
+    public static void comprobarCicloDeJuego() {
+        int turno = 0;
         int nuevoNumero;
         int numeroAnterior;
-        int contadorTotal;
+        int contadorTotal = 0;
+        int nJugadores = preguntarPorJugadores();
         int rangoMaximo = preguntarUsuarioPorRango();
-        boolean numberIsValid = true;
 
-// tablero
-        //En turno 1 permitimos cualquier número del 1 al 9
 
-        nuevoNumero = introducirNumero();
+        //Teniendo el rango máximo ya dado por el usuario, mostramos las normas de la partida y comenzamos el primer turno
+        //permitiendo que el jugador 1, únicamente en el primer turno, pueda introducir cualquier número del 1 al 9.
+        System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo +
+                "\nLas normas son sencillas: el primer jugador puede introducir cualquier número " +
+                "del 1 al 9." + "\nA partir de ahí, cada jugador debe introducir un nuevo número que no debe ser " +
+                "\nel mismo que el anterior introducido y debe estar en la misma fila y columna");
+
+        System.out.println("--- Turno del jugador " + (turno + 1 ) + " ---");
+        nuevoNumero = introducirNumero(contadorTotal);
         contadorTotal = nuevoNumero;
         numeroAnterior = nuevoNumero;
+        turno = comprobarQuienJuega(turno, nJugadores);
 
 
         while (rangoMaximo > contadorTotal) {
-            System.out.println(numeroAnterior);
-            nuevoNumero = introducirNumero();
+            System.out.println("--- Turno del jugador " + (turno + 1) +  " ---");
+            System.out.println("El número anterior es: " + numeroAnterior);
+            nuevoNumero = introducirNumero(contadorTotal);
+
             //Comprobamos que no esté en la misma fila, columna o que no sea el número anterior
-            if (numeroAnterior == 1 && ((nuevoNumero == 1 || nuevoNumero == 5 || nuevoNumero == 6 || nuevoNumero == 8 || nuevoNumero == 9))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 2 && ((nuevoNumero == 2 || nuevoNumero == 4 || nuevoNumero == 7 || nuevoNumero == 6 || nuevoNumero == 9))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 3 && ((nuevoNumero == 3 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 4 || nuevoNumero == 7))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 4 && ((nuevoNumero == 4 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 9 || nuevoNumero == 6))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 5 && ((nuevoNumero == 5 || nuevoNumero == 1 || nuevoNumero == 3 || nuevoNumero == 7 || nuevoNumero == 9))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 6 && ((nuevoNumero == 6 || nuevoNumero == 1 || nuevoNumero == 2 || nuevoNumero == 7 || nuevoNumero == 8))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 7 && ((nuevoNumero == 7 || nuevoNumero == 2 || nuevoNumero == 3 || nuevoNumero == 5 || nuevoNumero == 6))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 8 && ((nuevoNumero == 8 || nuevoNumero == 1 || nuevoNumero == 3 || nuevoNumero == 4 || nuevoNumero == 6))) {
-                mostrarErrorFilasColumnas();
-            } else if (numeroAnterior == 9 && ((nuevoNumero == 9 || nuevoNumero == 1 || nuevoNumero == 2 || nuevoNumero == 4 || nuevoNumero == 5))) {
+            if (!validarNumeros(nuevoNumero, numeroAnterior)) {
                 mostrarErrorFilasColumnas();
             } else {
-                //si el nº es valido
+                //Si el numero introducido es valido lo suma al contador y lo convierte al numero anterior introducido
                 numeroAnterior = nuevoNumero;
                 contadorTotal = contadorTotal + nuevoNumero;
-
+                turno = comprobarQuienJuega(turno, nJugadores);
             }
+            System.out.println("El contador total es: " + contadorTotal);
 
-
-            System.out.println(contadorTotal);
         }
+        System.out.println("\nEl total (" + contadorTotal + ") ha alcanzado o superado el objetivo (" + rangoMaximo + ").");
+
 
 
     }
+
 
     public static boolean validarNumeros(int nuevoNumero, int anteriorNumero) {
         if (anteriorNumero == 1 && ((nuevoNumero == 1 || nuevoNumero == 5 || nuevoNumero == 6 || nuevoNumero == 8 || nuevoNumero == 9))) {
@@ -102,7 +98,7 @@ public class Main {
             return false;
         } else if (anteriorNumero == 3 && ((nuevoNumero == 3 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 4 || nuevoNumero == 7))) {
             return false;
-        } else if (anteriorNumero == 4 && ((nuevoNumero == 4 || nuevoNumero == 5 || nuevoNumero == 8 || nuevoNumero == 9 || nuevoNumero == 6))) {
+        } else if (anteriorNumero == 4 && ((nuevoNumero == 4 || nuevoNumero == 8 || nuevoNumero == 9 || nuevoNumero == 2 || nuevoNumero == 3))) {
             return false;
         } else if (anteriorNumero == 5 && ((nuevoNumero == 5 || nuevoNumero == 1 || nuevoNumero == 3 || nuevoNumero == 7 || nuevoNumero == 9))) {
             return false;
@@ -136,28 +132,41 @@ public class Main {
      *
      * @return
      */
-    public static int introducirNumero() {
+    public static int introducirNumero(int contadorTotal) {
         int nuevoNumero;
-        System.out.println("Por favor, introduce un número entre el 1 y el 9 para jugar: ");
+
+        if (contadorTotal == 0) {
+            System.out.println("Por favor, introduce un número entre el 1 y el 9 para jugar: ");
+
+        } else {
+            System.out.println("Por favor, introduce un número en la misma fila o columna" +
+                    "\n sin ser el mismo número que el anterior introducido.");
+
+        }
+
         Scanner sc = new Scanner(System.in);
         nuevoNumero = sc.nextInt();
-        if (nuevoNumero < 1 || nuevoNumero > 9) {
+
+        while (nuevoNumero < 1 || nuevoNumero > 9) {
             System.err.println("El número introducido debe ser un número del 1 al 9");
-            introducirNumero();
+            nuevoNumero = sc.nextInt();
         }
         return nuevoNumero;
 
 
     }
 
-    public static int comprobarTurno() {
-        int jugador1 = 1;
-        int jugador2 = 2;
+    public static int comprobarQuienJuega(int turnoActual, int nJugadores) {
+        return (turnoActual + 1) % nJugadores;
 
-        if ()
-        
 
     }
 
-
+    public static int preguntarPorJugadores() {
+        int numeroJugadores;
+        System.out.println("Cuántos jugadores van a jugar: ");
+        Scanner sc = new Scanner(System.in);
+        numeroJugadores = sc.nextInt();
+        return numeroJugadores;
+    }
 }
