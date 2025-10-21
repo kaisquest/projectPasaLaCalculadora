@@ -51,6 +51,25 @@ public class Main {
         int contadorTotal = 0;
         int nJugadores = preguntarPorJugadores();
         boolean jugarPartida = true;
+        boolean primeraPartida = true;
+        String nombreJugador1 = "";
+        String nombreJugador2 = "";
+        String nombreJugador3 = "";
+
+
+        //Preguntamos el nombre de los jugadores que juegan la partida en base a la cantidad de jugadores
+        //que se indicó que iban a jugar, siendo esto 2 o 3 jugadores.
+        if (nJugadores == 2) {
+            nombreJugador1 = preguntarNombre();
+            nombreJugador2 = preguntarNombre();
+        }
+
+        if (nJugadores == 3) {
+            nombreJugador1 = preguntarNombre();
+            nombreJugador2 = preguntarNombre();
+            nombreJugador3 = preguntarNombre();
+        }
+
 
         //Hacemos un bucle jugable para jugar. Mientras la condición de jugarPartida sea true, se juega una partida. Esta condición simepre
         //es true nada más iniciar el programa.
@@ -58,12 +77,21 @@ public class Main {
             int rangoMaximo = preguntarUsuarioPorRango();
             //Teniendo el rango máximo ya dado por el usuario, mostramos las normas de la partida y comenzamos el primer turno
             //permitiendo que el jugador 1, únicamente en el primer turno, pueda introducir cualquier número del 1 al 9.
-            System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo +
-                    "\nLas normas son sencillas: el primer jugador puede introducir cualquier número " +
-                    "del 1 al 9." + "\nA partir de ahí, cada jugador debe introducir un nuevo número que no debe ser " +
-                    "\nel mismo que el anterior introducido y debe estar en la misma fila y columna");
+            //Esto solo lo mostramos la primera partida que se juega de cada vez
+            if (primeraPartida) {
+                System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo +
+                        "\nLas normas son sencillas: el primer jugador puede introducir cualquier número " +
+                        "del 1 al 9." + "\nA partir de ahí, cada jugador debe introducir un nuevo número que no debe ser " +
+                        "\nel mismo que el anterior introducido y debe estar en la misma fila y columna");
+            }else {System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo);
 
-            System.out.println("--- Turno del jugador " + (turno + 1) + " ---");
+            }
+
+
+            //System.out.println("--- Turno del jugador " + (turno + 1) + " ---");
+
+            //El primer turno siempre lo juega el jugador 1
+            System.out.println("--- Turno de " + nombreJugador1 + " ---");
             nuevoNumero = introducirNumero(contadorTotal);
             contadorTotal = nuevoNumero;
             numeroAnterior = nuevoNumero;
@@ -71,7 +99,22 @@ public class Main {
 
 
             while (rangoMaximo > contadorTotal) {
-                System.out.println("--- Turno del jugador " + (turno + 1) + " ---");
+                //System.out.println("--- Turno del jugador " + (turno + 1) + " ---");
+
+                //Comprobamos de quién es el turno, si del jugador 1, 2 o 3
+                if (turno == 0) {
+                    System.out.println("--- Turno de " + nombreJugador1 + " ---");
+
+                }
+                if (turno == 1) {
+                    System.out.println("--- Turno de " + nombreJugador2 + " ---");
+
+                }
+                if (turno == 2) {
+                    System.out.println("--- Turno de " + nombreJugador3 + " ---");
+
+                }
+
                 System.out.println("El número anterior es: " + numeroAnterior);
                 nuevoNumero = introducirNumero(contadorTotal);
 
@@ -79,7 +122,7 @@ public class Main {
                 if (!validarNumeros(nuevoNumero, numeroAnterior)) {
                     mostrarErrorFilasColumnas();
                 } else {
-                    //Si el numero introducido es valido lo suma al contador y lo convierte al numero anterior introducido
+                    //Si el numero introducido es válido lo suma al contador y lo convierte al numero anterior introducido
                     numeroAnterior = nuevoNumero;
                     contadorTotal = contadorTotal + nuevoNumero;
                     turno = comprobarQuienJuega(turno, nJugadores);
@@ -89,10 +132,25 @@ public class Main {
 
             }
             System.out.println("\nEl total (" + contadorTotal + ") ha alcanzado o superado el objetivo (" + rangoMaximo + ").");
-            System.out.println("El jugador " + (turno + 1) + " ha perdido.");
+            //Indicamos qué jugador ha perdido la partida
+            if (turno == 0) {
+                System.out.println("El jugador " + nombreJugador1 + " ha perdido.");
+
+            }
+            if (turno == 1) {
+                System.out.println("El jugador " + nombreJugador2 + " ha perdido.");
+
+            }
+            if (turno == 2) {
+                System.out.println("El jugador " + nombreJugador3 + " ha perdido.");
+            }
+            //System.out.println("El jugador " + (turno + 1) + " ha perdido.");
+            //Preguntamos una vez acabada la partida si se quiere jugar otra. En caso afirmativo reseteamos los turnos y contadores,
+            //pero no preguntamos de nuevo cuántos jugadores son.
             jugarPartida = repetirJuego();
             turno = 0;
             contadorTotal = 0;
+            primeraPartida = false;
 
 
         }
@@ -146,9 +204,11 @@ public class Main {
     }
 
     /**
-     * Preguntamos al usuario por un número para jugar
+     * Preguntamos al usuario por un número para jugar. Si es el primer turno el número puede ser cualquiera
+     * entre el 1 y el 9. A partir de ahí se pide que el número esté en la misma fila o columna que el anterior.
+     * Cuando introducimos un número se comprueba también que primero esté en el rango del 1 al 9.
      *
-     * @return
+     * @return Devuelve nuevoNumero como int.
      */
     public static int introducirNumero(int contadorTotal) {
         int nuevoNumero;
@@ -188,15 +248,24 @@ public class Main {
     }
 
     /**
-     * En esta función lo que se hace es preguntar al usuario cuántos jugadores va a tener la partida
+     * En esta función lo que se hace es preguntar al usuario cuántos jugadores va a tener la partida.
+     * No se permite que haya menos de 2 jugadores y más de 3 en una sola partida.
      *
      * @return Devuelve como número entero el número que se introduce al preguntar cuántos jugadores van a jugar.
      */
     public static int preguntarPorJugadores() {
         int numeroJugadores;
-        System.out.println("Cuántos jugadores van a jugar: ");
+        System.out.println("Las partidas pueden ser de 2 o 3 jugadores máximo." +
+                "\n¿Cuántos jugadores van a jugar?");
         Scanner sc = new Scanner(System.in);
         numeroJugadores = sc.nextInt();
+
+        while (numeroJugadores < 2 || numeroJugadores > 3) {
+            System.out.println("Las partidas pueden ser de 2 o 3 jugadores máximo." +
+                    "\n¿Cuántos jugadores sois?");
+            numeroJugadores = sc.nextInt();
+
+        }
         return numeroJugadores;
     }
 
@@ -216,6 +285,21 @@ public class Main {
             return true;
         }
         return false;
+
+
+    }
+
+    /**Esta función se encarga de preguntar por consola cuál es el nombre de un jugador.
+     *
+     * @return Devuelve el nombre de un jugador en forma de String,
+     */
+    public static String preguntarNombre() {
+        String nombreJugador = "";
+
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Por favor, introduce el nombre del jugador: ");
+        return nombreJugador = sc.next();
 
 
     }
