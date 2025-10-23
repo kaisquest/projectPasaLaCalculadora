@@ -83,7 +83,8 @@ public class Main {
                         "\nLas normas son sencillas: el primer jugador puede introducir cualquier número " +
                         "del 1 al 9." + "\nA partir de ahí, cada jugador debe introducir un nuevo número que no debe ser " +
                         "\nel mismo que el anterior introducido y debe estar en la misma fila y columna");
-            }else {System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo);
+            } else {
+                System.out.println("Comienza la partida. La puntuación Objetivo es: " + rangoMaximo);
 
             }
 
@@ -132,18 +133,10 @@ public class Main {
 
             }
             System.out.println("\nEl total (" + contadorTotal + ") ha alcanzado o superado el objetivo (" + rangoMaximo + ").");
+
             //Indicamos qué jugador ha perdido la partida
-            if (turno == 0) {
-                System.out.println("El jugador " + nombreJugador1 + " ha perdido.");
+            comprobarQuienPierde(nJugadores, turno, nombreJugador2, nombreJugador1, nombreJugador3);
 
-            }
-            if (turno == 1) {
-                System.out.println("El jugador " + nombreJugador2 + " ha perdido.");
-
-            }
-            if (turno == 2) {
-                System.out.println("El jugador " + nombreJugador3 + " ha perdido.");
-            }
             //System.out.println("El jugador " + (turno + 1) + " ha perdido.");
             //Preguntamos una vez acabada la partida si se quiere jugar otra. En caso afirmativo reseteamos los turnos y contadores,
             //pero no preguntamos de nuevo cuántos jugadores son.
@@ -153,6 +146,42 @@ public class Main {
             primeraPartida = false;
 
 
+        }
+    }
+
+    /**
+     * Esta función comprueba qué jugador ha perdido.
+     * @param nJugadores Entra por parámetro int el número de jugadores.
+     * @param turno Entra por parámetro int el turno en el que se está.
+     * @param nombreJugador2 Entra por parámetro String el nombre del jugador 2.
+     * @param nombreJugador1 Entra por parámetro String el nombre del jugador 1.
+     * @param nombreJugador3 Entra por parámetro String el nombre del jugador 3.
+     */
+    private static void comprobarQuienPierde(int nJugadores, int turno, String nombreJugador2, String nombreJugador1, String nombreJugador3) {
+        if (nJugadores == 2) {
+            if (turno == 0) {
+                System.out.println("El jugador " + nombreJugador2 + " ha perdido.");
+
+            }
+            if (turno == 1) {
+                System.out.println("El jugador " + nombreJugador1 + " ha perdido.");
+
+            }
+
+        }
+
+        if (nJugadores == 3) {
+            if (turno == 0) {
+                System.out.println("El jugador " + nombreJugador3 + " ha perdido.");
+
+            }
+            if (turno == 1) {
+                System.out.println("El jugador " + nombreJugador1 + " ha perdido.");
+
+            }
+            if (turno == 2) {
+                System.out.println("El jugador " + nombreJugador2 + " ha perdido.");
+            }
         }
     }
 
@@ -191,7 +220,6 @@ public class Main {
         return true;
 
     }
-
 
     /**
      * Esta función tiene como único objetivo lanzar un mensaje por pantalla que le diga
@@ -289,7 +317,8 @@ public class Main {
 
     }
 
-    /**Esta función se encarga de preguntar por consola cuál es el nombre de un jugador.
+    /**
+     * Esta función se encarga de preguntar por consola cuál es el nombre de un jugador.
      *
      * @return Devuelve el nombre de un jugador en forma de String,
      */
