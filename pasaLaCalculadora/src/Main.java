@@ -1,3 +1,4 @@
+import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Main {
@@ -151,8 +152,9 @@ public class Main {
 
     /**
      * Esta función comprueba qué jugador ha perdido.
-     * @param nJugadores Entra por parámetro int el número de jugadores.
-     * @param turno Entra por parámetro int el turno en el que se está.
+     *
+     * @param nJugadores     Entra por parámetro int el número de jugadores.
+     * @param turno          Entra por parámetro int el turno en el que se está.
      * @param nombreJugador2 Entra por parámetro String el nombre del jugador 2.
      * @param nombreJugador1 Entra por parámetro String el nombre del jugador 1.
      * @param nombreJugador3 Entra por parámetro String el nombre del jugador 3.
@@ -305,15 +307,26 @@ public class Main {
      */
     public static boolean repetirJuego() {
         String respuestaSi = "Si";
+        String respuestaNo = "No";
+
         System.out.println("¿Desea jugar otra partida? Si / No");
         Scanner sc = new Scanner(System.in);
         String respuestaUsuario = sc.next();
 
+        while (respuestaSi.compareToIgnoreCase(respuestaUsuario) != 0 && respuestaNo.compareToIgnoreCase(respuestaUsuario) != 0) {
+            System.out.println("La respuesta sólo puede ser Sí o No.");
+            respuestaUsuario = sc.next();
+        }
+
         if (respuestaSi.compareToIgnoreCase(respuestaUsuario) == 0) {
             return true;
         }
-        return false;
+        if (respuestaNo.compareToIgnoreCase(respuestaUsuario) == 0) {
+            System.out.println("Muchas gracias por jugar. ¡Hasta la próxima!");
+            return false;
 
+        }
+        return false;
 
     }
 
