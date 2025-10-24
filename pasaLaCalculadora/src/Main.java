@@ -302,8 +302,11 @@ public class Main {
     /**
      * Esta funcion pregunta al usuario al finalizar la partida si quiere jugar otra vez
      * Compara la respuesta dada por el usuario en una String con otra es String.
+     * Si la respuesta no es ni Si ni No muestra un mensaje de que la respuesta no es válida
+     * y le vuelve a preguntar al usuario.
      *
-     * @return Si la comparación da 0 devuelve true. En caso contrario devuelve false.
+     * @return Si la comparación de Si da 0 devuelve true. Si la comparación de No da 0 devuelve false.
+     * Si ninguna se cumple devuelve false.
      */
     public static boolean repetirJuego() {
         String respuestaSi = "Si";
